@@ -28,14 +28,19 @@ function createQuery(owner, repoName, numOfPrs, state)
                 title
                 author {
                     login
+                    url
+                    avatarUrl
                 }
                 baseRefName
                 mergeable
                 createdAt
                 updatedAt
-                labels(last: 5) {
+                url
+                labels(last: 10) {
                     nodes {
                         name
+                        color
+                        description
                     }
                 }
                 commits(last: 1) {
@@ -50,6 +55,10 @@ function createQuery(owner, repoName, numOfPrs, state)
                                     description
                                     state
                                     targetUrl
+                                    creator {
+                                        login
+                                        avatarUrl
+                                    }
                                 }
                             }
                         }
@@ -84,7 +93,7 @@ export function fetchPullRequests(fetchOptions) {
     Object.assign(options, defaults, fetchOptions);
 
     const query = createQuery(options.owner, options.repoName,
-                              options.numOfPrs);
+                              options.numOfPrs, options.state);
 
-    return gitHubJSONQuery(query, options.token);
+    return gitHubJSONQuery(query, options.token).then(data => data.repository);
 };

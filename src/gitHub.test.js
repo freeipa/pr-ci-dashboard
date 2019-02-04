@@ -94,6 +94,8 @@ it('can execute query with token after logout', async() => {
 
 test('gitHubJSONQuery to get JSON', async() => {
     let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
-    let response = await gitHubJSONQuery(query, config.token);
-    checkQueryResult(response);
+    let data = await gitHubJSONQuery(query, config.token);
+    expect(data).toHaveProperty('repository.name', DEFAULT_REPO);
+    expect(data).toHaveProperty('rateLimit.limit', 5000);
+    expect(data).toHaveProperty('rateLimit.cost', 1);
 });

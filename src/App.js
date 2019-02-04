@@ -12,6 +12,7 @@ import {
 } from 'patternfly-react';
 
 import GitHubLogin from './GitHubLogin';
+import {PullRequestsList} from './components/PullRequests'
 
 import pfLogo from 'patternfly/dist/img/logo-alt.svg';
 import pfBrand from './images/brand.svg';
@@ -26,7 +27,7 @@ const Content = (props) => {
     </Grid>
 }
 
-const PRs = () => <Content><h2>Pull Requests</h2></Content>;
+const PRs = () => <Content><PullRequestsList /></Content>;
 const Nighlies = () => <Content><h2>Nighlies</h2></Content>;
 const Jobs = () => <Content><h2>Jobs</h2></Content>;
 

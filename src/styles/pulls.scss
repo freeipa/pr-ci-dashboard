@@ -1,0 +1,33 @@
+
+.pr-author {
+    vertical-align: middle;
+    img {
+        padding:5px;
+        height: 45px;
+        border-radius: 45%;
+    }
+}
+
+.pr-number {
+    font-size: 1.1em;
+    vertical-align: middle;
+}
+
+.pr-title {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.pr-checkListItem {
+    img {
+        padding:2px;
+        height: 30px;
+        border-radius: 45%;
+    }
+
+    .status-description,
+    .jobLink,
+    .resultsLink {
+        padding-left: 10px;
+    }
+}

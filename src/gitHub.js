@@ -1,6 +1,7 @@
 export const DEFAULT_OWNER = "freeipa"
 export const DEFAULT_REPO = "freeipa";
 const TOKEN_KEY = "github_token"
+const rateLimit = {};
 
 function getToken() {
     return window.localStorage.getItem(TOKEN_KEY);
@@ -59,8 +60,13 @@ export function gitHubQuery(query, token) {
 }
 
 export function gitHubJSONQuery(query, token) {
-    return gitHubQuery(query, token).then(
-            response => response.json());
+    return gitHubQuery(query, token)
+    .then(response => response.json())
+    .then(result => {
+        let data = result.data;
+        Object.assign(rateLimit, data.rateLimit);
+        return data;
+    });
 }
 
 export function authenticate(token, owner, repo) {

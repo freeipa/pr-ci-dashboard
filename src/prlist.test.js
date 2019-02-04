@@ -6,11 +6,16 @@ import {fetchPullRequests} from './prlist';
 import config from './test.config';
 
 it('can fetch pr list', async() => {
-    let prs = await fetchPullRequests({
+    let repository = await fetchPullRequests({
             token: config.token,
-            state: "open",
-            numOfPrs: 20
+            state: "OPEN",
+            numOfPrs: 2
     });
-    expect(prs.data);
-    expect(prs.data.repository.url).toBe("https://github.com/freeipa/freeipa");
+    let prs = repository.pullRequests.nodes;
+    expect(prs).toHaveLength(2);
+    let pr = prs[0];
+    expect(pr).toHaveProperty("state", "OPEN");
+    expect(pr).toHaveProperty("number");
+    expect(pr).toHaveProperty("title");
+    expect(pr).toHaveProperty("author");
 });
