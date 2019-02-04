@@ -11,7 +11,7 @@ about React development see [README-react.md](./README-react.md)
 ## Start coding
 
 As a prerequisite, install [Node.JS](https://nodejs.org) with
-[NPM](https://www.npmjs.com/). NPM will do the rest.
+[yarn](https://yarnpkg.com). Yarn with React Scripts will do the rest.
 
 ```bash
 $ yarn install
