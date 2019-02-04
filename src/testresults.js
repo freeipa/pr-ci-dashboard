@@ -98,7 +98,7 @@ function parse_testcase(element) {
  */
 export function read_junit_xml(xml_text) {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(xml_text, "text/xml")
+    const doc = parser.parseFromString(xml_text, "text/xml");
     const testcases = parse_testsuite(doc);
     return testcases;
 }
