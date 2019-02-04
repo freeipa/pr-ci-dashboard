@@ -1,4 +1,4 @@
-# FreeIPA Pull Request CI - DashBoard
+# FreeIPA Pull Request CI - Dashboard
 
 A Dashboard for [FreeIPA PR-CI](https://github.com/freeipa/freeipa-pr-ci).
 
@@ -14,14 +14,14 @@ As a prerequisite, install [Node.JS](https://nodejs.org) with
 [NPM](https://www.npmjs.com/). NPM will do the rest.
 
 ```bash
-$ npm install
-$ npm start
+$ yarn install
+$ yarn start
 ```
 
 ## Test
 
 ``` bash
-$ npm test
+$ yarn test
 ```
 
 ## Deploy
