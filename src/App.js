@@ -10,6 +10,8 @@ import {
   Grid
 } from 'patternfly-react';
 
+import GitHubLogin from './GitHubLogin';
+
 import pfLogo from 'patternfly/dist/img/logo-alt.svg';
 import pfBrand from 'patternfly/dist/img/brand-alt.svg';
 
@@ -76,6 +78,7 @@ class App extends Component {
                 <Route path="/prs" component={PRs} />
                 <Route path="/nightlies" component={Nighlies} />
                 <Route path="/jobs" component={Jobs} />
+                <Route path="/login" component={GitHubLogin} />
                 <Redirect exact from="/" to="/prs" />
             </Switch>
 
