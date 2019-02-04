@@ -14,7 +14,7 @@ import {
 import GitHubLogin from './GitHubLogin';
 
 import pfLogo from 'patternfly/dist/img/logo-alt.svg';
-import pfBrand from 'patternfly/dist/img/brand-alt.svg';
+import pfBrand from './images/brand.svg';
 
 const Content = (props) => {
     return <Grid fluid className="container-pf-nav-pf-vertical">
