@@ -9,6 +9,9 @@
 # production
 /build
 
+# css - Output of SASS
+App.css
+
 # misc
 .DS_Store
 .env.local
