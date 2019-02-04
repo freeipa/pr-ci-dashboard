@@ -12,6 +12,11 @@ const localStorageMock = {
     },
     removeItem: function (key) {
         delete store[key];
+    },
+    register: function() {
+        if (!window.localStorage) {
+            window.localStorage = localStorageMock;
+        }
     }
 };
 

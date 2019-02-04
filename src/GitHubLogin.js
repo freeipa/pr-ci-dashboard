@@ -5,7 +5,7 @@ import LoginCardWithValidation from './LoginCardWithValidation'
 import pfLogo from 'patternfly/dist/img/logo.svg';
 import pfBrand from 'patternfly/dist/img/brand.svg';
 
-const createProps = () => {
+const createProps = (onSubmit) => {
     return {
         container: {
             backgroundUrl:"",
@@ -48,9 +48,7 @@ const createProps = () => {
                 },
                 disableSubmit: false,
                 submitText: "Log In",
-                onSubmit: (e, onError) => {
-                    window.console.log("Foo");
-                }
+                onSubmit: onSubmit
             }
         }
     };
@@ -85,12 +83,18 @@ const LoginPagePattern = ({ container, header, footerLinks, card }) => (
     </LoginPage.Container>
 );
 
-class Content extends Component {
+class GitHubLoginPage extends Component {
+
+    onSubmit = (e, state, onError) => {
+        let submit = this.props.onSubmit
+        submit(state.usernameField.value, onError);
+    };
+
     render() {
         return (
-            <LoginPagePattern {...createProps()} />
+            <LoginPagePattern {...createProps(this.onSubmit)} />
         );
     }
 }
 
-export default Content;
+export default GitHubLoginPage;

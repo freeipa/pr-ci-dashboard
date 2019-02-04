@@ -3,11 +3,11 @@ export const DEFAULT_REPO = "freeipa";
 const TOKEN_KEY = "github_token"
 
 function getToken() {
-    return global.localStorage.getItem(TOKEN_KEY);
+    return window.localStorage.getItem(TOKEN_KEY);
 }
 
 function setToken(value) {
-    global.localStorage.setItem(TOKEN_KEY, '');
+    window.localStorage.setItem(TOKEN_KEY, '');
 }
 
 export function isAuthenticated() {

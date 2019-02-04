@@ -8,15 +8,7 @@ import localStorageMock from './mocks/localStorageMock';
 // source control.
 import config from './test.config';
 
-let oldLocalStorage = window.localStorage;
-
-beforeAll(() => {
-    Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-});
-
-afterAll(() => {
-    Object.defineProperty(window, 'localStorage', { value: oldLocalStorage });
-});
+localStorageMock.register();
 
 function checkNotAuthenticated(error) {
     expect(error).toBeInstanceOf(Error);

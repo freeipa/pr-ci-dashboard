@@ -81,7 +81,8 @@ class LoginCardWithValidation extends React.Component {
     e.preventDefault();
     if (this.isFormValid()) {
       this.onSubmitStart();
-      this.props.onSubmit(e, this.onSubmitError);
+      // custom modification to pass state so that auth method can get values
+      this.props.onSubmit(e, this.state, this.onSubmitError);
     } else {
       this.handleOnInputErrors();
     }
