@@ -4,8 +4,8 @@
 // requires clients secret and this app should run with public source code
 // without server side.
 
-const DEFAULT_OWNER = "freeipa"
-const DEFAULT_REPO = "freeipa";
+import { DEFAULT_OWNER, DEFAULT_REPO, gitHubJSONQuery } from './gitHub';
+
 const DEFAULT_PRS = 50;
 
 function createQuery(owner, repoName, numOfPrs, state)
@@ -85,17 +85,6 @@ export function fetchPullRequests(fetchOptions) {
 
     const query = createQuery(options.owner, options.repoName,
                               options.numOfPrs);
-    const init_obj = {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${options.token}`,
-            'Content-Type': "application/json"
-        },
-        mode: "cors",
-        body: JSON.stringify({query: query})
-    };
 
-    const p = window.fetch('https://api.github.com/graphql', init_obj)
-        .then(response => response.json()).then(json => json);
-    return p;
+    return gitHubJSONQuery(query, options.token);
 };
