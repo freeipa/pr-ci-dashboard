@@ -19,15 +19,17 @@ it('creates results url', () => {
 });
 
 it('fetches real test results - junit.xml', async() => {
-    var realJobId = 'fafa754a-7bf8-11e8-99d4-fa163e966a99';
+    // this is not a greatest thing to have explicitely defined in tests
+    // as the job can be deleted and the test needs to be changed
+    var realJobId = '737d9902-dc8e-11e8-ba6e-fa163e9cc7bf'; // fedora-28/caless
     let xunitResult = await fetch_test_results(realJobId);
     expect(xunitResult.errors).toBe(0);
-    expect(xunitResult.failures).toBe(1);
+    expect(xunitResult.failures).toBe(0);
     expect(xunitResult.name).toBe("pytest");
     expect(xunitResult.skips).toBe(0);
-    expect(xunitResult.tests).toBe(1);
-    expect(xunitResult.time).toBeCloseTo(818.72, 2);
-    expect(xunitResult.testcases).toHaveLength(1);
+    expect(xunitResult.tests).toBe(3);
+    expect(xunitResult.time).toBeCloseTo(1432.027, 2);
+    expect(xunitResult.testcases).toHaveLength(3);
 });
 
 it('can parse junit xml well', () => {
