@@ -19,11 +19,11 @@ it('can authenticate with defaults', async() => {
     let status = await authenticate(config.token);
     expect(status).toBe(true);
     expect(isAuthenticated()).toBe(true);
-});
+}, 10000);
 
 it('cannot authenticate without token', async() => {
     const empty = [null, undefined, ''];
-    for (var element in empty) {
+    for (var element of empty) {
         try {
             await authenticate(element);
         } catch (error) {
@@ -37,7 +37,7 @@ it('cannot authenticate with bad token', async() => {
     let status = await authenticate('randomtext');
     expect(status).toBe(false);
     expect(isAuthenticated()).toBe(false);
-});
+}, 10000);
 
 test('createAuthTestQuery to contain query', () => {
     let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
@@ -90,7 +90,7 @@ it('can execute query with token after logout', async() => {
     expect(response.ok).toBe(true);
     let json = await response.json()
     checkQueryResult(json);
-});
+}, 10000);
 
 test('gitHubJSONQuery to get JSON', async() => {
     let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
@@ -98,4 +98,4 @@ test('gitHubJSONQuery to get JSON', async() => {
     expect(data).toHaveProperty('repository.name', DEFAULT_REPO);
     expect(data).toHaveProperty('rateLimit.limit', 5000);
     expect(data).toHaveProperty('rateLimit.cost', 1);
-});
+}, 10000);

@@ -1,5 +1,6 @@
 export const DEFAULT_OWNER = "freeipa"
 export const DEFAULT_REPO = "freeipa";
+export const GITHUB_FETCH_LIMIT = 100;
 const TOKEN_KEY = "github_token"
 const rateLimit = {};
 
@@ -64,7 +65,9 @@ export function gitHubJSONQuery(query, token) {
     .then(response => response.json())
     .then(result => {
         let data = result.data;
-        Object.assign(rateLimit, data.rateLimit);
+        if (data.rateLimit) {
+            Object.assign(rateLimit, data.rateLimit);
+        }
         return data;
     });
 }
