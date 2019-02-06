@@ -13,6 +13,7 @@ import {
 
 import GitHubLogin from './GitHubLogin';
 import {PullRequestsList} from './components/PullRequests'
+import {NightlyOverview} from './components/NightlyRuns';
 
 import pfLogo from 'patternfly/dist/img/logo-alt.svg';
 import pfBrand from './images/brand.svg';
@@ -28,7 +29,7 @@ const Content = (props) => {
 }
 
 const PRs = () => <Content><PullRequestsList /></Content>;
-const Nighlies = () => <Content><h2>Nighlies</h2></Content>;
+const Nighlies = () => <Content><NightlyOverview/></Content>;
 const Jobs = () => <Content><h2>Jobs</h2></Content>;
 
 function PrivateRoute({ component: Component, ...rest }) {
