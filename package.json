@@ -2,6 +2,7 @@
   "name": "pr-ci-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/pcd/",
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
     "font-awesome-sass": "^4.7.0",
