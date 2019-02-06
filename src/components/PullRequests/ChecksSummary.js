@@ -7,8 +7,8 @@ export class ChecksSummary extends React.Component {
         let count = statusMap[state].length
         if (count > 0) {
             return (
-                <div class="list-view-pf-additional-info-item" key={state}>
-                    <span class={iconMap[state]}></span>
+                <div className="list-view-pf-additional-info-item" key={state}>
+                    <span className={iconMap[state]}></span>
                     <strong>{count}</strong> {getWording(state, count)}
                 </div>
             );

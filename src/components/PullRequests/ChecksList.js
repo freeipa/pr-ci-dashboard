@@ -47,7 +47,7 @@ export class ChecksList extends React.Component {
 
         return (
             <div key={status.id} className="pr-checkListItem">
-                <span class={iconMap[status.state]}></span>
+                <span className={iconMap[status.state]}></span>
                 <img src={status.creator.avatarUrl} alt={status.creator.login} />
                 {context}
                 <span className='status-description'>{status.description}</span>

@@ -24,9 +24,9 @@ class PullRequestRow extends React.Component {
         let pr = this.props.pr;
         return (
         <tr>
-            <td colspan='3'>
+            <td colSpan='3'>
             </td>
-            <td colspan='3'>
+            <td colSpan='3'>
                 <ChecksList statuses={pr.commits.nodes[0].commit.status.contexts} />
             </td>
         </tr>
@@ -41,7 +41,7 @@ class PullRequestRow extends React.Component {
         <tr>
             <td className='table-view-pf-select'
                 onClick={() => this.handleExpand()}>
-                <span class="fa fa-angle-right"></span>
+                <span className="fa fa-angle-right"></span>
             </td>
             <td className='pr-author'>
                 <img src={pr.author.avatarUrl} alt={pr.author.login} height="40px" />
