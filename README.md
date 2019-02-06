@@ -20,6 +20,15 @@ $ yarn start
 
 ## Test
 
+First-time prep:
+```
+# until GitHub API usage is mocked, following is needed:
+$ cp src/test.config.js.in src/test.config.js
+# vim src/test.config.js # and add token there
+```
+
+Then
+
 ``` bash
 $ yarn test
 ```
