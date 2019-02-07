@@ -136,13 +136,24 @@ function processNighlies(cache) {
  *
  * @param {*} refresh Break cache
  */
-async function getNightlies(refresh) {
+export async function getNightlies(refresh) {
     if (refresh) resetCache();
     if (!cache.output) {
         await loadNighlies();
         processNighlies(cache);
     }
     return cache.output;
+}
+
+export async function getNightlyType(typeName, refresh) {
+    let output = await getNightlies(refresh);
+    for (const nightlyType of output.nightlyTypes) {
+        if (nightlyType.name === typeName) {
+            console.log(nightlyType);
+            return nightlyType;
+        }
+    }
+    return null;
 }
 
 export default getNightlies;

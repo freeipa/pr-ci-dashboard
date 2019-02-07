@@ -1,5 +1,6 @@
 import React from 'react';
 import ChecksSummary from '../PullRequests/ChecksSummary';
+import { Link } from 'react-router-dom';
 
 class NightlyRow extends React.Component {
     render() {
@@ -12,7 +13,7 @@ class NightlyRow extends React.Component {
                 {recent.createdAt}
             </td>
             <td className='pr-title'>
-                <strong>{nightly.name}</strong>
+                <Link to={`/nightly/${nightly.name}`}><strong>{nightly.name}</strong></Link>
             </td>
             <td  className='pr-checks'>
                 <ChecksSummary statuses={recent.commits.nodes[0].commit.status.contexts} />

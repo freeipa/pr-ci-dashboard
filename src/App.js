@@ -7,26 +7,16 @@ import {
   VerticalNav,
   VerticalNavItem,
   VerticalNavMasthead,
-  VerticalNavBrand,
-  Grid
+  VerticalNavBrand
 } from 'patternfly-react';
 
+import Content from './Content'
 import GitHubLogin from './GitHubLogin';
 import {PullRequestsList} from './components/PullRequests'
-import {NightlyOverview} from './components/NightlyRuns';
+import {NightlyOverview, NightlyType} from './components/NightlyRuns';
 
 import pfLogo from 'patternfly/dist/img/logo-alt.svg';
 import pfBrand from './images/brand.svg';
-
-const Content = (props) => {
-    return <Grid fluid className="container-pf-nav-pf-vertical">
-        <Grid.Row>
-            <Grid.Col xs={12}>
-                {props.children}
-            </Grid.Col>
-        </Grid.Row>
-    </Grid>
-}
 
 const PRs = () => <Content><PullRequestsList /></Content>;
 const Nighlies = () => <Content><NightlyOverview/></Content>;
@@ -122,7 +112,8 @@ class App extends Component {
 
             <Switch>
                 <PrivateRoute path="/prs" component={PRs} />
-                <Route path="/nightlies" component={Nighlies} />
+                <PrivateRoute path="/nightlies" component={Nighlies} />
+                <PrivateRoute path="/nightly/:nightlyTypeName" component={NightlyType} />
                 <Route path="/jobs" component={Jobs} />
                 <Route path="/login" component={LoginWithRedirect} />
                 <Redirect exact from="/" to="/prs" />

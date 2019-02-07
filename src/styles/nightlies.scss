@@ -1,0 +1,30 @@
+td.jobName {
+    width: 20%;
+}
+.jobName {
+    font-weight: bold;
+}
+.jobResult {
+    height: 60px;
+    width:  60px;
+
+    &.SUCCESS {
+        background-color: rgba(52, 196, 52, 0.863);
+    }
+
+    &.ERROR {
+        background-color: rgb(170, 61, 143);
+    }
+
+    &.FAILURE {
+        background-color: rgb(180, 40, 40);
+    }
+
+    &.PENDING {
+        background-color: rgb(202, 174, 50);
+    }
+}
+td.filler {
+
+    width: 20%;
+}
