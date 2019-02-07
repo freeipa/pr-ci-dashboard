@@ -18,7 +18,7 @@ class PullRequestList extends React.Component {
             ...this.state,
             loading: true
         })
-        fetchPullRequests({numOfPrs: 5, state: 'OPEN'}).then(repository => {
+        fetchPullRequests({numOfPrs: 50, state: 'OPEN'}).then(repository => {
             this.setState({
                 repository: repository,
                 loading: false
