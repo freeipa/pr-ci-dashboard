@@ -67,11 +67,18 @@ function processNighlies(cache) {
     for (let type of types) {
         let typeMap = map[type];
         let nightlies = typeMap.nightlies;
-        for (var i=0, l=nightlies.length; i<l; i++) {
+        for (let i=0, l=nightlies.length; i<l; i++) {
             let nightly = nightlies[i];
             let statuses = nightly.commits.nodes[0].commit.status.contexts;
             for (let status of statuses) {
                 addToTypeMap(i, typeMap.jobs, status);
+            }
+        }
+        // fill gaps in jobs with explicit null so that even they are iterable
+        let jobs = typeMap.jobs;
+        for (let i=0, l=nightlies.length; i<l; i++) {
+            for(let jobName in jobs) {
+                jobs[jobName][i] = jobs[jobName][i] || null;
             }
         }
     }
