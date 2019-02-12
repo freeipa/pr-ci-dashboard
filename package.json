@@ -2,9 +2,11 @@
   "name": "pr-ci-dashboard",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/pcd/",
+  "proxy": "http://localhost:5000/",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "bootstrap-sass": "^3.3.7",
+    "express": "^4.16.4",
     "font-awesome-sass": "^4.7.0",
     "node-sass-chokidar": "^1.3.0",
     "patternfly-react": "^2.29.9",
@@ -23,15 +25,19 @@
   "scripts": {
     "build-css": "cross-var \"node-sass-chokidar src/ --output-style compressed $npm_package_sassIncludes_src $npm_package_sassIncludes_patternfly $npm_package_sassIncludes_patternflyReact $npm_package_sassIncludes_bootstrap $npm_package_sassIncludes_fontAwesome -o src/\"",
     "watch-css": "npm run build-css && cross-var \"node-sass-chokidar src/ --output-style compressed $npm_package_sassIncludes_src $npm_package_sassIncludes_patternfly $npm_package_sassIncludes_patternflyReact $npm_package_sassIncludes_bootstrap $npm_package_sassIncludes_fontAwesome -o src/ --watch --recursive\"",
+    "server": "nodemon server/server.js",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently --kill-others-on-fail \"yarnpkg server\" \"yarnpkg start\""
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "cross-var": "^1.1.0",
+    "nodemon": "^1.18.10",
     "npm-run-all": "^4.1.3"
   },
   "browserslist": [
