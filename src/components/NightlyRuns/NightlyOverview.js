@@ -1,44 +1,80 @@
 import React from 'react';
-import { LoadingState} from 'patternfly-react';
-import getNightlies from './NighlyService';
+import { LoadingState } from 'patternfly-react';
+import { getNightlies } from './NighlyService';
+import { getReportedFailures } from './PagureService';
 import NightlyRow from './NightlyRow';
+import PagureIssueRow from './PagureIssueRow';
+
 
 class NightlyOverview extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
             nightlies: {
                 nightlies: [],
-                nightlyTypes: []
+                nightlyTypes: [],
             },
-            loading: false
+            reportedFailures: [],
+            loading: false,
+            loadingTickets: false,
         };
     }
 
     componentWillMount() {
-        this.setState({
-            ...this.state,
-            loading: true
+        this.setState(prevState => ({
+            ...prevState,
+            loading: true,
+            loadingTickets: true,
+        }));
+        getNightlies().then((nightlies) => {
+            this.setState(prevState => ({
+                ...prevState,
+                nightlies,
+                loading: false,
+            }));
         });
-        getNightlies().then(nightlies => {
-            this.setState({
-                nightlies: nightlies,
-                loading: false
-            });
+        getReportedFailures().then((tickets) => {
+            this.setState(prevState => ({
+                ...prevState,
+                reportedFailures: tickets,
+                loadingTickets: false,
+            }));
         });
     }
 
     render() {
-        const nightlies = this.state.nightlies;
+        const { nightlies, reportedFailures, loadingTickets } = this.state;
         const types = nightlies.nightlyTypes;
-
         return (
         <React.Fragment>
-            <h2>Nightly Runs</h2>
-            <LoadingState loading={this.state.loading} size="lg" loadingText=''>
-            <table className='table table-striped table-bordered table-hover'>
-            <thead>
+        <React.Fragment>
+            <h2>Reported bugs (test failures)</h2>
+            <LoadingState loading={loadingTickets} size="lg" loadingText="">
+            <table className="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                    <th>#</th>
+                    <th>Opened/Update</th>
+                    <th>Bug title</th>
+                    <th>Reporter</th>
+                    <th>Assignee</th>
+                    <th>Milestone</th>
+                    <th>Priority</th>
+                    <th>Pull Request (review)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {reportedFailures.map((issue) => <PagureIssueRow issue={issue}
+                                                    key={issue.id} /> )}
+                </tbody>
+            </table>
+            </LoadingState>
+        </React.Fragment>
+        <React.Fragment>
+            <h2>Recent Nightly Runs</h2>
+            <LoadingState loading={this.state.loading} size="lg" loadingText="">
+            <table className="table table-striped table-bordered table-hover">
+                <thead>
                     <tr>
                     <th>Last run</th>
                     <th>Nightly run</th>
@@ -46,11 +82,12 @@ class NightlyOverview extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                {types.map((nightly, i) => <NightlyRow nightly={nightly}
-                                                    key={nightly.name}/>)}
+                {(types.map(nightly => <NightlyRow nightly={nightly}
+                                                   key={nightly.name} />))}
                 </tbody>
             </table>
             </LoadingState>
+        </React.Fragment>
         </React.Fragment>
         );
     }

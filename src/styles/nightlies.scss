@@ -9,19 +9,19 @@ td.jobName {
     width:  60px;
 
     &.SUCCESS {
-        background-color: rgba(52, 196, 52, 0.863);
+        background-color: rgb(135, 183, 123);
     }
 
     &.ERROR {
-        background-color: rgb(170, 61, 143);
+        background-color: rgb(236, 57, 0);
     }
 
     &.FAILURE {
-        background-color: rgb(180, 40, 40);
+        background-color: rgb(243, 108, 74);
     }
 
     &.PENDING {
-        background-color: rgb(202, 174, 50);
+        background-color: rgb(247, 214, 62);
     }
 }
 td.filler {
