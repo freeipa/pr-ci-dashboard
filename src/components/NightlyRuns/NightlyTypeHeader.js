@@ -1,23 +1,28 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-class NightlyTypeHeader extends React.Component {
-
-    renderCell(nightlyRun) {
-        return <th key={nightlyRun.number} className='nightlyHeader'>
+function renderCell(nightlyRun) {
+    return (
+        <th key={nightlyRun.number} className="nightlyHeader">
             <div><strong>{nightlyRun.number}</strong></div>
             <div>{(new Date(nightlyRun.createdAt)).toDateString()}</div>
-        </th>;
-    }
-
-    render() {
-        let nightlies = this.props.nightlies;
-        return (
-        <React.Fragment>
-             <th></th>
-             { nightlies.map((nightlyRun, i) => this.renderCell(nightlyRun)) }
-        </React.Fragment>
-        );
-    }
+        </th>
+    );
 }
+
+function NightlyTypeHeader(props) {
+    const { nightlies } = props;
+    return (
+        <React.Fragment>
+            <th />
+            { nightlies.map(nightlyRun => renderCell(nightlyRun)) }
+        </React.Fragment>
+    );
+}
+
+NightlyTypeHeader.propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    nightlies: PropTypes.array.isRequired,
+};
 
 export default NightlyTypeHeader;
