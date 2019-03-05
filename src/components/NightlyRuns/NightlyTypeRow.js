@@ -1,29 +1,35 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-class NightlyTypeRow extends React.Component {
+function renderCell(result, i) {
+    if (!result) {
+        return <td key={i} className="jobResult empty" />;
+    }
 
-    renderCell(result, i) {
-        if (!result) {
-            return <td key={i} className='jobResult empty'></td>;
-        }
-
-        return <td key={i}
+    return (
+        <td
+            key={i}
             className={`jobResult ${result.state}`}
-            title={result.state}>
-        </td>;
-    }
-
-    render() {
-        let job = this.props.job;
-        return (
-        <React.Fragment>
-             <tr>
-             <td className='jobName'>{job.name}</td>
-             { job.results.map((result, i) => this.renderCell(result, i)) }
-             </tr>
-        </React.Fragment>
-        );
-    }
+            title={result.state}
+        />
+    );
 }
+
+function NightlyTypeRow(props) {
+    const { job } = props;
+    return (
+        <React.Fragment>
+            <tr>
+                <td className="jobName">{job.name}</td>
+                { job.results.map((result, i) => renderCell(result, i)) }
+            </tr>
+        </React.Fragment>
+    );
+}
+
+NightlyTypeRow.propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    job: PropTypes.object.isRequired,
+};
 
 export default NightlyTypeRow;
