@@ -9,6 +9,10 @@ export function issueUrl(issue) {
     return `${PAGURE_URL}/${FREEIPA_PROJECT}/issue/${issue.id}`;
 }
 
+export function milestoneUrl(milestone) {
+    return `${PAGURE_URL}/${FREEIPA_PROJECT}/roadmap/${milestone}`;
+}
+
 export async function getIssues(project, status, tag) {
     const url = `${API_URL}/${project}/issues?status=${status}&tags=${tag}`;
     let out = null;

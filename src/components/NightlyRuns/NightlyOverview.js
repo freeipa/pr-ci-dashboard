@@ -54,13 +54,14 @@ class NightlyOverview extends React.Component {
                 <thead>
                     <tr>
                     <th>#</th>
-                    <th>Opened/Update</th>
+                    <th>Opened/Updated</th>
                     <th>Bug title</th>
                     <th>Reporter</th>
                     <th>Assignee</th>
                     <th>Milestone</th>
                     <th>Priority</th>
                     <th>Pull Request (review)</th>
+                    <th>Test Case</th>
                     </tr>
                 </thead>
                 <tbody>
