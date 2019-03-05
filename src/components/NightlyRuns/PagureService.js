@@ -6,7 +6,7 @@ const OPEN = 'Open';
 const PAGURE_URL = 'https://pagure.io';
 
 export function issueUrl(issue) {
-    return `${PAGURE_URL}/${FREEIPA_PROJECT}/${issue.id}`;
+    return `${PAGURE_URL}/${FREEIPA_PROJECT}/issue/${issue.id}`;
 }
 
 export async function getIssues(project, status, tag) {
