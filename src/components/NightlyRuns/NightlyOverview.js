@@ -21,75 +21,82 @@ class NightlyOverview extends React.Component {
     }
 
     componentWillMount() {
-        this.setState(prevState => ({
-            ...prevState,
+        this.setState({
             loading: true,
             loadingTickets: true,
-        }));
+        });
         getNightlies().then((nightlies) => {
-            this.setState(prevState => ({
-                ...prevState,
+            this.setState({
                 nightlies,
                 loading: false,
-            }));
+            });
         });
         getReportedFailures().then((tickets) => {
-            this.setState(prevState => ({
-                ...prevState,
+            this.setState({
                 reportedFailures: tickets,
                 loadingTickets: false,
-            }));
+            });
         });
     }
 
     render() {
-        const { nightlies, reportedFailures, loadingTickets } = this.state;
+        const {
+            nightlies, reportedFailures, loadingTickets, loading,
+        } = this.state;
         const types = nightlies.nightlyTypes;
         return (
-        <React.Fragment>
-        <React.Fragment>
-            <h2>Reported bugs (test failures)</h2>
-            <LoadingState loading={loadingTickets} size="lg" loadingText="">
-            <table className="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>Opened/Updated</th>
-                    <th>Bug title</th>
-                    <th>Reporter</th>
-                    <th>Assignee</th>
-                    <th>Milestone</th>
-                    <th>Priority</th>
-                    <th>Pull Request (review)</th>
-                    <th>Test Case</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {reportedFailures.map((issue) => <PagureIssueRow issue={issue}
-                                                    key={issue.id} /> )}
-                </tbody>
-            </table>
-            </LoadingState>
-        </React.Fragment>
-        <React.Fragment>
-            <h2>Recent Nightly Runs</h2>
-            <LoadingState loading={this.state.loading} size="lg" loadingText="">
-            <table className="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                    <th>Last run</th>
-                    <th>Nightly run</th>
-                    <th>Last run results</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {(types.map(nightly => <NightlyRow nightly={nightly}
-                                                   key={nightly.name} />))}
-                </tbody>
-            </table>
-            </LoadingState>
-        </React.Fragment>
-        </React.Fragment>
+            <React.Fragment>
+                <React.Fragment>
+                    <h2>Reported bugs (test failures)</h2>
+                    <LoadingState loading={loadingTickets} size="lg" loadingText="">
+                        <table className="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Opened/Updated</th>
+                                    <th>Bug title</th>
+                                    <th>Reporter</th>
+                                    <th>Assignee</th>
+                                    <th>Milestone</th>
+                                    <th>Priority</th>
+                                    <th>Pull Request (review)</th>
+                                    <th>Test Case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                { reportedFailures.map(issue => (
+                                    <PagureIssueRow
+                                        issue={issue}
+                                        key={issue.id}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                    </LoadingState>
+                </React.Fragment>
+                <React.Fragment>
+                    <h2>Recent Nightly Runs</h2>
+                    <LoadingState loading={loading} size="lg" loadingText="">
+                        <table className="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Last run</th>
+                                    <th>Nightly run</th>
+                                    <th>Last run results</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {(types.map(nightly => (
+                                    <NightlyRow
+                                        nightly={nightly}
+                                        key={nightly.name}
+                                    />
+                                )))}
+                            </tbody>
+                        </table>
+                    </LoadingState>
+                </React.Fragment>
+            </React.Fragment>
         );
     }
 }

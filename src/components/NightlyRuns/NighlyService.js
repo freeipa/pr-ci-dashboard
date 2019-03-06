@@ -4,17 +4,17 @@ import { fetchPullRequestsPaged } from '../../prlist';
 const SOURCE_PRS = 100;
 
 // String to filter Pull Request title to get nightly runs
-const NIGHTLY_FILTER = "Nightly PR";
+const NIGHTLY_FILTER = 'Nightly PR';
 
 const cache = {
-    nighlies: [],
+    nightlies: [],
     types: [],
     map: [],
-    output: null // this should be the only publicly visible
+    output: null, // this should be the only publicly visible
 };
 
 function resetCache() {
-    cache.nighlies = [];
+    cache.nightlies = [];
     cache.types = [];
     cache.map = [];
     cache.output = null;
@@ -24,91 +24,90 @@ function resetCache() {
  * Fills cache.nightlies with new data
  */
 async function loadNighlies() {
-    cache.nighlies = await fetchPullRequestsPaged({
+    cache.nightlies = await fetchPullRequestsPaged({
         numOfPrs: SOURCE_PRS,
-        filter: NIGHTLY_FILTER
+        filter: NIGHTLY_FILTER,
     });
-    return cache.nighlies;
+    return cache.nightlies;
 }
 
 /**
  * Sets cache.types and cache.map based on data from cache.nightlies
  */
-function processNighlies(cache) {
-    let map = {};
-    let types = [];
+function processNightlies(c) {
+    const newC = {
+        ...c,
+    };
+    const map = {};
+    const types = [];
 
     // Group Nighlies by types
-    for (let pr of cache.nighlies) {
+    for (let i = 0, l = newC.nightlies.length; i < l; i += 1) {
+        const pr = newC.nightlies[i];
         if (!map[pr.title]) {
             types.push(pr.title);
             map[pr.title] = {
                 jobs: {},
-                nightlies: []
+                nightlies: [],
             };
         }
         map[pr.title].nightlies.push(pr);
     }
-    cache.map = map;
-    cache.types = types;
+    newC.map = map;
+    newC.types = types;
 
     // Here would be ordering by date, but we assume it is already ordered
     // by GitHub
 
-    // Group tests within types
-    // Output is dict (typeMap) of arrays of the same jobs (status), key is a
-    // job name (status.context)
-    function addToTypeMap(position, jobs, status) {
-        let name = status.context;
-        if (!jobs[name]) jobs[name] = [];
-        jobs[name][position] = status;
-    }
+    types.forEach((type) => {
+        const typeMap = map[type];
+        const { nightlies, jobs } = typeMap;
+        for (let i = 0, l = nightlies.length; i < l; i += 1) {
+            const nightly = nightlies[i];
+            const statuses = nightly.commits.nodes[0].commit.status.contexts;
 
-    for (let type of types) {
-        let typeMap = map[type];
-        let nightlies = typeMap.nightlies;
-        for (let i=0, l=nightlies.length; i<l; i++) {
-            let nightly = nightlies[i];
-            let statuses = nightly.commits.nodes[0].commit.status.contexts;
-            for (let status of statuses) {
-                addToTypeMap(i, typeMap.jobs, status);
-            }
+            // Group tests within types
+            // Output is dict (typeMap) of arrays of the same jobs (status), key is a
+            // job name (status.context)
+            statuses.forEach((status) => {
+                const name = status.context;
+                if (!jobs[name]) jobs[name] = [];
+                jobs[name][i] = status;
+            });
         }
         // fill gaps in jobs with explicit null so that even they are iterable
-        let jobs = typeMap.jobs;
-        for (let i=0, l=nightlies.length; i<l; i++) {
-            for(let jobName in jobs) {
-                jobs[jobName][i] = jobs[jobName][i] || null;
-            }
+        for (let i = 0, l = nightlies.length; i < l; i += 1) {
+            Object.values(jobs).forEach((job) => {
+                // eslint-disable-next-line no-param-reassign
+                job[i] = job[i] || null;
+            });
         }
-    }
+    });
 
     // final process
     // transform it into structure to enable:
     // nightlyType => test names => array of test results
-    cache.output = {
-        nightlies: cache.nighlies,
-        nightlyTypes: []
+    newC.output = {
+        nightlies: newC.nightlies,
+        nightlyTypes: [],
     };
-    let nts = cache.output.nightlyTypes;
-    for (const type of types) {
-        let jobs = [];
-        let jobsIn = cache.map[type].jobs;
-
-        for (const job in jobsIn) {
-            jobs.push({
-                name: job,
-                results: jobsIn[job]
-            });
-        }
+    const nts = newC.output.nightlyTypes;
+    types.forEach((type) => {
+        const jobs = [];
+        const jobsIn = newC.map[type].jobs;
+        Object.keys(jobsIn).forEach(jobName => jobs.push({
+            name: jobName,
+            results: jobsIn[jobName],
+        }));
 
         nts.push({
             name: type,
-            nightlies: cache.map[type].nightlies,
-            jobs: jobs
+            nightlies: newC.map[type].nightlies,
+            jobs,
         });
-    }
-    console.log(cache);
+    });
+    console.log(newC);
+    return newC;
 }
 
 /**
@@ -147,20 +146,14 @@ export async function getNightlies(refresh) {
     if (refresh) resetCache();
     if (!cache.output) {
         await loadNighlies();
-        processNighlies(cache);
+        Object.assign(cache, processNightlies(cache));
     }
     return cache.output;
 }
 
 export async function getNightlyType(typeName, refresh) {
-    let output = await getNightlies(refresh);
-    for (const nightlyType of output.nightlyTypes) {
-        if (nightlyType.name === typeName) {
-            console.log(nightlyType);
-            return nightlyType;
-        }
-    }
-    return null;
+    const output = await getNightlies(refresh);
+    return output.nightlyTypes.find(t => t.name === typeName);
 }
 
 export default getNightlies;
