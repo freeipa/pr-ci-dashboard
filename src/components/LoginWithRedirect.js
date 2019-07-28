@@ -32,7 +32,7 @@ class LoginWithRedirect extends React.Component {
         const { redirectToReferrer } = this.state;
 
         if (redirectToReferrer) return <Redirect to={from} />;
-        return <GitHubLogin onSubmit={() => this.login} />;
+        return <GitHubLogin onSubmit={(value, onError) => this.login(value, onError)} />;
     }
 }
 

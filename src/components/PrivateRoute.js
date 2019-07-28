@@ -10,7 +10,7 @@ function PrivateRoute({ component: Component, ...rest }) {
         <Route
             {...rest}
             render={(props) => {
-                if (isAuthenticated) {
+                if (isAuthenticated()) {
                     return <Component {...props} />;
                 }
                 return (
