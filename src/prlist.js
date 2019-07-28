@@ -10,16 +10,14 @@ import {
 
 const DEFAULT_PRS = 5;
 
-const RATE_LIMIT =
-`rateLimit {
+const RATE_LIMIT = `rateLimit {
     limit
     cost
     remaining
     resetAt
 }`;
 
-const DETAILED_PR_FIELDS =
-`
+const DETAILED_PR_FIELDS = `
     state
     number
     title
@@ -30,8 +28,7 @@ const DETAILED_PR_FIELDS =
     url
 `;
 
-const PR_AUTHOR_FIELDS =
-`
+const PR_AUTHOR_FIELDS = `
     author {
         login
         url
@@ -39,8 +36,7 @@ const PR_AUTHOR_FIELDS =
     }
 `;
 
-const PR_LABELS_FIELDS =
-`
+const PR_LABELS_FIELDS = `
     labels(last: 10) {
         nodes {
             name
@@ -50,8 +46,7 @@ const PR_LABELS_FIELDS =
     }
 `;
 
-const CI_INFO_FIELDS =
-`
+const CI_INFO_FIELDS = `
     commits(last: 1) {
         nodes {
             commit {
@@ -90,19 +85,19 @@ function createPRFilter(numOfPrs, state, orderBy, cursor) {
         opt.push(['orderBy', orderBy]);
     }
     opt = opt.map(o => `${o[0]}: ${o[1]}`);
-    return opt.join(', ')
+    return opt.join(', ');
 }
 
 
-function createQuery(owner, repoName, numOfPrs, state)
-{
-    let prFilter = createPRFilter(
-        numOfPrs, state, "{field: CREATED_AT, direction: DESC}", null);
+function createQuery(owner, repoName, numOfPrs, state) {
+    const prFilter = createPRFilter(
+        numOfPrs, state, '{field: CREATED_AT, direction: DESC}', null,
+    );
 
     // query can be tuned in GitHub GraphQL explorer
     // https://developer.github.com/v4/explorer/
     // cost of this query is 1
-    let query = `
+    const query = `
     query {
         repository(owner: "${owner}", name: "${repoName}" ) {
             url
@@ -117,18 +112,17 @@ function createQuery(owner, repoName, numOfPrs, state)
         }
         ${RATE_LIMIT}
     }
-`
+`;
     return query;
 }
 
 
 function pagedQuery(owner, repoName, numOfPrs, state, cursor) {
+    const prFilter = createPRFilter(
+        numOfPrs, state, '{field: CREATED_AT, direction: DESC}', cursor,
+    );
 
-    let prFilter = createPRFilter(
-        numOfPrs, state, "{field: CREATED_AT, direction: DESC}", cursor);
-
-    let query =
-    `
+    const query = `
     query allButSmall{
         repository(owner: "${owner}", name: "${repoName}") {
             url
@@ -150,14 +144,12 @@ function pagedQuery(owner, repoName, numOfPrs, state, cursor) {
 }
 
 function detailsQuery(prs) {
+    const ids = prs.map(pr => `"${pr.id}"`);
+    const idStr = ids.join(', ');
 
-    let ids = prs.map(pr => `"${pr.id}"`);
-    let id_str = ids.join(", ");
-
-    let query =
-    `
+    const query = `
     query list{
-        nodes(ids:[${id_str}]) {
+        nodes(ids:[${idStr}]) {
             ...on PullRequest {
                 ${DETAILED_PR_FIELDS}
                 ${PR_AUTHOR_FIELDS}
@@ -183,18 +175,18 @@ function detailsQuery(prs) {
  * @param {*} cursor Cursor from previous fetch, use null for first call
  */
 function fetchNext(resolve, reject, prs, owner, repoName, numOfPrs, state, cursor, token) {
-    let numToFetch = numOfPrs > GITHUB_FETCH_LIMIT ? GITHUB_FETCH_LIMIT : numOfPrs;
-    let query = pagedQuery(owner, repoName, numToFetch, state, cursor);
-    let p = gitHubJSONQuery(query, token).then(data => {
-        prs.push.apply(prs, data.repository.pullRequests.nodes);
-        let remaining = numOfPrs-numToFetch;
-        let pageInfo = data.repository.pullRequests.pageInfo;
+    const numToFetch = numOfPrs > GITHUB_FETCH_LIMIT ? GITHUB_FETCH_LIMIT : numOfPrs;
+    const query = pagedQuery(owner, repoName, numToFetch, state, cursor);
+    const p = gitHubJSONQuery(query, token).then((data) => {
+        prs.push(...data.repository.pullRequests.nodes);
+        const remaining = numOfPrs - numToFetch;
+        const { pageInfo } = data.repository.pullRequests;
         if (pageInfo.hasNextPage && remaining > 0) {
             return fetchNext(resolve, reject, prs, owner, repoName,
                 remaining, state, pageInfo.endCursor, token);
-        } else {
-            resolve(prs);
         }
+
+        return resolve(prs);
     });
     return p;
 }
@@ -205,42 +197,39 @@ function fetchNext(resolve, reject, prs, owner, repoName, numOfPrs, state, curso
  * @param {String} filter
  * @return {Array} Filtered PRs
  */
-function filter(prs, filter) {
-    let filtered = [];
-    if (!filter) return prs.concat([]);
-    for (let pr of prs) {
-        if (pr.title.indexOf(filter) > 0) {
+function filter(prs, matchStr) {
+    const filtered = [];
+    if (!matchStr) return prs.concat([]);
+    prs.forEach((pr) => {
+        if (pr.title.indexOf(matchStr) > 0) {
             filtered.push(pr);
         }
-    }
+    });
     return filtered;
 }
 
 export function fetchPagedQuery(options) {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetchNext(resolve, reject, [], options.owner, options.repoName,
             options.numOfPrs, options.state, null, options.token);
-    }).then(prs => {
-        return filter(prs, options.filter);
-    });
+    }).then(prs => filter(prs, options.filter));
 }
 
 export function fetchPRDetails(prs, token) {
+    let limitedPrs = prs;
     if (prs.length > GITHUB_FETCH_LIMIT) {
-        prs = prs.slice(0, GITHUB_FETCH_LIMIT);
+        limitedPrs = prs.slice(0, GITHUB_FETCH_LIMIT);
     }
-    let query = detailsQuery(prs);
-    return gitHubJSONQuery(query, token).then(data => {
-        return data.nodes;
-    });
+    const query = detailsQuery(limitedPrs);
+    return gitHubJSONQuery(query, token).then(data => data.nodes);
 }
 
 function prepOptions(fetchOptions) {
-    let options = {};
-    let defaults = {
+    const options = {};
+    const defaults = {
         owner: DEFAULT_OWNER,
         repoName: DEFAULT_REPO,
-        numOfPrs: DEFAULT_PRS
+        numOfPrs: DEFAULT_PRS,
     };
     Object.assign(options, defaults, fetchOptions);
     return options;
@@ -261,10 +250,10 @@ function prepOptions(fetchOptions) {
  * } fetchOptions
  */
 export async function fetchPullRequestsPaged(fetchOptions) {
-    let options = prepOptions(fetchOptions);
-    return fetchPagedQuery(options).then(prs => {
-        return fetchPRDetails(prs, options.token);
-    });
+    const options = prepOptions(fetchOptions);
+    return fetchPagedQuery(options).then(
+        prs => fetchPRDetails(prs, options.token),
+    );
 }
 
 
@@ -277,10 +266,11 @@ export async function fetchPullRequestsPaged(fetchOptions) {
  * } fetchOptions
  */
 export async function fetchPullRequests(fetchOptions) {
-
-    let options = prepOptions(fetchOptions);
-    const query = createQuery(options.owner, options.repoName,
-                              options.numOfPrs, options.state);
+    const options = prepOptions(fetchOptions);
+    const query = createQuery(
+        options.owner, options.repoName,
+        options.numOfPrs, options.state,
+    );
 
     return gitHubJSONQuery(query, options.token).then(data => data.repository);
-};
+}

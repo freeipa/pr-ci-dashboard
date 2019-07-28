@@ -84,7 +84,7 @@ class App extends Component {
 
 App.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
-    history: PropTypes.array.isRequired,
+    history: PropTypes.object.isRequired,
 };
 
 const RouteredApp = withRouter(App);
