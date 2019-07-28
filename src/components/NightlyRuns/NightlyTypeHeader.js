@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 function renderCell(nightlyRun) {
     return (
         <th key={nightlyRun.number} className="nightlyHeader">
-            <div><strong>{nightlyRun.number}</strong></div>
+            <div>
+                <a href={nightlyRun.url} title={nightlyRun.title}>
+                    <strong>{nightlyRun.number}</strong>
+                </a>
+            </div>
             <div>{(new Date(nightlyRun.createdAt)).toDateString()}</div>
         </th>
     );
