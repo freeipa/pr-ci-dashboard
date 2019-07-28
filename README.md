@@ -57,10 +57,13 @@ Then
 $ yarnpkg test
 ```
 
-## Deploy
+## Run in production
+
+Assuming desired port is 8080.
 
 ```bash
-$ TBD
+$ yarnpkg build
+$ PORT=8080 node server/server.js
 ```
 
 ## Demo
