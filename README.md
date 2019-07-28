@@ -59,11 +59,17 @@ $ yarnpkg test
 
 ## Run in production
 
-Assuming desired port is 8080.
+Assuming desired port is 8888.
 
 ```bash
 $ yarnpkg build
-$ PORT=8080 node server/server.js
+$ PORT=8888 node server/server.js
+```
+
+Or in a container via Podman and then e.g. in Firefox
+```bash
+$ podman run --name pcd -p 8888:8888 -d docker.io/pvoborni/pr-ci-dashboard:latest
+$ firefox localhost:8888
 ```
 
 ## Demo
