@@ -5,8 +5,8 @@
 // without server side.
 
 import {
-    DEFAULT_OWNER, DEFAULT_REPO, gitHubJSONQuery, GITHUB_FETCH_LIMIT
- } from './gitHub';
+    DEFAULT_OWNER, DEFAULT_REPO, gitHubJSONQuery, GITHUB_FETCH_LIMIT,
+} from './gitHub';
 
 const DEFAULT_PRS = 5;
 
