@@ -84,15 +84,18 @@ const LoginPagePattern = ({ container, header, footerLinks, card }) => (
 );
 
 class GitHubLoginPage extends Component {
-
-    onSubmit = (e, state, onError) => {
-        let submit = this.props.onSubmit
-        submit(state.usernameField.value, onError);
-    };
+    onSubmit(e, state, onError) {
+        const { onSubmit } = this.props;
+        onSubmit(state.usernameField.value, onError);
+    }
 
     render() {
         return (
-            <LoginPagePattern {...createProps(this.onSubmit)} />
+            <LoginPagePattern
+                {...createProps((e, state, onError) => {
+                    this.onSubmit(e, state, onError);
+                })}
+            />
         );
     }
 }

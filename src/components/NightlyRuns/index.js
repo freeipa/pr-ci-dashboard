@@ -3,5 +3,5 @@ import NightlyType from './NightlyType';
 
 export {
     NightlyOverview,
-    NightlyType
-}
+    NightlyType,
+};

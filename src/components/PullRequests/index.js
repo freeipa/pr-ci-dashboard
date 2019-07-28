@@ -1,5 +1,3 @@
-import PullRequestsList from './PullRequestsList'
+import PullRequestsList from './PullRequestsList';
 
-export {
-    PullRequestsList
-}
+export default PullRequestsList;
