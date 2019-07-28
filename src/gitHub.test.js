@@ -1,6 +1,7 @@
 import {
     DEFAULT_OWNER, DEFAULT_REPO, isAuthenticated, logout, createAuthTestQuery,
-    gitHubQuery, gitHubJSONQuery, authenticate} from './gitHub';
+    gitHubQuery, gitHubJSONQuery, authenticate,
+} from './gitHub';
 import localStorageMock from './mocks/localStorageMock';
 
 // test.config.js must be created from test.config.js.in
@@ -15,32 +16,33 @@ function checkNotAuthenticated(error) {
     expect(error).toHaveProperty('message', 'Not authenticated');
 }
 
-it('can authenticate with defaults', async() => {
-    let status = await authenticate(config.token);
+it('can authenticate with defaults', async () => {
+    const status = await authenticate(config.token);
     expect(status).toBe(true);
     expect(isAuthenticated()).toBe(true);
 }, 10000);
 
-it('cannot authenticate without token', async() => {
+it('cannot authenticate without token', async () => {
     const empty = [null, undefined, ''];
-    for (var element of empty) {
+
+    empty.forEach(async (element) => {
         try {
             await authenticate(element);
         } catch (error) {
             checkNotAuthenticated(error);
         }
         expect(isAuthenticated()).toBe(false);
-    };
+    });
 });
 
-it('cannot authenticate with bad token', async() => {
-    let status = await authenticate('randomtext');
+it('cannot authenticate with bad token', async () => {
+    const status = await authenticate('randomtext');
     expect(status).toBe(false);
     expect(isAuthenticated()).toBe(false);
 }, 10000);
 
 test('createAuthTestQuery to contain query', () => {
-    let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
+    const query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
     expect(typeof query).toBe('string');
     expect(query).toMatch('query');
 });
@@ -50,18 +52,18 @@ test('that logout means not authenticated', () => {
     expect(isAuthenticated()).toBe(false);
 });
 
-it('cannot execute query without token (auth)', async() => {
+it('cannot execute query without token (auth)', async () => {
     expect.assertions(2);
-    let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
+    const query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
     try {
-        await gitHubQuery(query)
+        await gitHubQuery(query);
     } catch (e) {
         checkNotAuthenticated(e);
     }
 });
 
-it('can authenticate', async() => {
-    let status = await authenticate(config.token, DEFAULT_OWNER,  DEFAULT_REPO);
+it('can authenticate', async () => {
+    const status = await authenticate(config.token, DEFAULT_OWNER, DEFAULT_REPO);
     expect(status).toBe(true);
     expect(isAuthenticated()).toBe(true);
 });
@@ -72,29 +74,29 @@ function checkQueryResult(content) {
     expect(content).toHaveProperty('data.rateLimit.cost', 1);
 }
 
-it('can execute query after auth', async() => {
-    let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
-    let response = await gitHubQuery(query);
+it('can execute query after auth', async () => {
+    const query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
+    const response = await gitHubQuery(query);
     expect(response.ok).toBe(true);
-    let json = await response.json()
+    const json = await response.json();
     checkQueryResult(json);
 });
 
-it('can execute query with token after logout', async() => {
+it('can execute query with token after logout', async () => {
     expect(localStorageMock).toHaveProperty('setItem');
     logout();
     expect(isAuthenticated()).toBe(false);
 
-    let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
-    let response = await gitHubQuery(query, config.token);
+    const query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
+    const response = await gitHubQuery(query, config.token);
     expect(response.ok).toBe(true);
-    let json = await response.json()
+    const json = await response.json();
     checkQueryResult(json);
 }, 10000);
 
-test('gitHubJSONQuery to get JSON', async() => {
-    let query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
-    let data = await gitHubJSONQuery(query, config.token);
+test('gitHubJSONQuery to get JSON', async () => {
+    const query = createAuthTestQuery(DEFAULT_OWNER, DEFAULT_REPO);
+    const data = await gitHubJSONQuery(query, config.token);
     expect(data).toHaveProperty('repository.name', DEFAULT_REPO);
     expect(data).toHaveProperty('rateLimit.limit', 5000);
     expect(data).toHaveProperty('rateLimit.cost', 1);
