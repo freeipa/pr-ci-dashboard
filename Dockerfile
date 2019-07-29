@@ -22,4 +22,6 @@ RUN yarnpkg cache clean
 RUN dnf remove git nodejs-yarn -y
 RUN dnf clean all
 
+USER 9000
+
 ENTRYPOINT ["/usr/bin/node", "/app/server/server.js"]
