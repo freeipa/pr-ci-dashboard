@@ -64,16 +64,18 @@ function processNightlies(c) {
         const { nightlies, jobs } = typeMap;
         for (let i = 0, l = nightlies.length; i < l; i += 1) {
             const nightly = nightlies[i];
-            const statuses = nightly.commits.nodes[0].commit.status.contexts;
+            const { status } = nightly.commits.nodes[0].commit;
+            if (status) {
+                // Group tests within types
+                // Output is dict (typeMap) of arrays of the same jobs (status), key is a
+                // job name (status.context)
+                status.contexts.forEach((context) => {
+                    const name = context.context;
+                    if (!jobs[name]) jobs[name] = [];
+                    jobs[name][i] = context;
+                });
+            }
 
-            // Group tests within types
-            // Output is dict (typeMap) of arrays of the same jobs (status), key is a
-            // job name (status.context)
-            statuses.forEach((status) => {
-                const name = status.context;
-                if (!jobs[name]) jobs[name] = [];
-                jobs[name][i] = status;
-            });
         }
         // fill gaps in jobs with explicit null so that even they are iterable
         for (let i = 0, l = nightlies.length; i < l; i += 1) {
