@@ -1,6 +1,6 @@
 export const DEFAULT_OWNER = 'freeipa';
 export const DEFAULT_REPO = 'freeipa';
-export const GITHUB_FETCH_LIMIT = 100;
+export const GITHUB_FETCH_LIMIT = 50;
 const TOKEN_KEY = 'github_token';
 const rateLimit = {};
 
