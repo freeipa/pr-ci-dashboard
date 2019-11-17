@@ -75,8 +75,8 @@ function processNightlies(c) {
                     jobs[name][i] = context;
                 });
             }
-
         }
+
         // fill gaps in jobs with explicit null so that even they are iterable
         for (let i = 0, l = nightlies.length; i < l; i += 1) {
             Object.values(jobs).forEach((job) => {
@@ -108,6 +108,10 @@ function processNightlies(c) {
             jobs,
         });
     });
+
+    // this is useful for debugging even when app is deployed in prod to see
+    // how the data is processed
+    // eslint-disable-next-line no-console
     console.log(newC);
     return newC;
 }
