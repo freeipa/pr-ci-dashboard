@@ -38,11 +38,6 @@ class App extends Component {
             to: '/nightlies',
             title: 'Nighly runs',
             iconClass: 'fa fa-moon-o',
-        },
-        {
-            to: '/jobs',
-            title: 'Jobs',
-            iconClass: 'fa fa-wrench',
         }];
     }
 
