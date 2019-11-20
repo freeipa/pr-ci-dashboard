@@ -24,6 +24,14 @@ import pfBrand from './images/brand.svg';
 const PRs = () => <Content><PullRequests /></Content>;
 const Nighlies = () => <Content><NightlyOverview /></Content>;
 const Jobs = () => <Content><h2>Jobs</h2></Content>;
+const OpenShiftLogo = () => (
+    <a href="https://www.openshift.com/" title="Powered by OpenShift Online">
+        <img
+            alt="Powered by OpenShift Online"
+            src="https://www.openshift.com/images/logos/powered_by_openshift_reverse.png"
+        />
+    </a>
+);
 
 
 class App extends Component {
@@ -72,6 +80,7 @@ class App extends Component {
                     <Route path="/login" component={LoginWithRedirect} />
                     <Redirect exact from="/" to="/prs" />
                 </Switch>
+                <div className="openshift-logo">{OpenShiftLogo()}</div>
             </div>
         );
     }
