@@ -9,7 +9,7 @@ import {
 import {
     Route, Redirect, withRouter, Switch,
 } from 'react-router-dom';
-import pfLogo from 'patternfly/dist/img/logo-alt.svg';
+import logo from './images/logo.svg';
 
 import './App.css';
 
@@ -67,7 +67,7 @@ class App extends Component {
             <div>
                 <VerticalNav persistentSecondary={false}>
                     <VerticalNavMasthead>
-                        <VerticalNavBrand titleImg={pfBrand} iconImg={pfLogo} />
+                        <VerticalNavBrand titleImg={pfBrand} iconImg={logo} />
                     </VerticalNavMasthead>
                     {vertNavItems}
                 </VerticalNav>
