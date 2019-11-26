@@ -27,12 +27,6 @@ app.post('/api/pagure/get', async (req, res) => {
     }
 });
 
-app.post('/api/world', (req, res) => {
-    res.send(
-        `I received your POST request. This is what you sent me: ${req.body.post}`,
-    );
-});
-
 app.use(express.static(path.join(__dirname, '..', 'build')));
 
 app.get('*', (req, res) => {
