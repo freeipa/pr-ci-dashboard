@@ -17,6 +17,7 @@ import Content from './Content';
 import PullRequests from './components/PullRequests';
 import PrivateRoute from './components/PrivateRoute';
 import LoginWithRedirect from './components/LoginWithRedirect';
+import OpenShiftLogo from './components/OpenShiftLogo';
 import { NightlyOverview, NightlyType } from './components/NightlyRuns';
 
 import pfBrand from './images/brand.svg';
@@ -24,15 +25,6 @@ import pfBrand from './images/brand.svg';
 const PRs = () => <Content><PullRequests /></Content>;
 const Nighlies = () => <Content><NightlyOverview /></Content>;
 const Jobs = () => <Content><h2>Jobs</h2></Content>;
-const OpenShiftLogo = () => (
-    <a href="https://www.openshift.com/" title="Powered by OpenShift Online">
-        <img
-            alt="Powered by OpenShift Online"
-            src="https://www.openshift.com/images/logos/powered_by_openshift_reverse.png"
-        />
-    </a>
-);
-
 
 class App extends Component {
     constructor() {
