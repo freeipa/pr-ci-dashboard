@@ -6,8 +6,9 @@ import {
 } from 'react-router-dom';
 
 import { authenticate } from '../gitHub';
-
+import { LoginPage, LoginCard } from 'patternfly-react';
 import GitHubLogin from '../GitHubLogin';
+import OpenShiftLogo from './OpenShiftLogo';
 
 class LoginWithRedirect extends React.Component {
     constructor() {
@@ -32,7 +33,15 @@ class LoginWithRedirect extends React.Component {
         const { redirectToReferrer } = this.state;
 
         if (redirectToReferrer) return <Redirect to={from} />;
-        return <GitHubLogin onSubmit={(value, onError) => this.login(value, onError)} />;
+        return (
+            <React.Fragment>
+                <GitHubLogin onSubmit={(value, onError) => this.login(value, onError)} />
+                <div>
+                Foo
+                </div>
+                {OpenShiftLogo()}
+            </React.Fragment>
+        );
     }
 }
 

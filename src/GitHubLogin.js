@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { LoginPage, LoginCard } from 'patternfly-react';
 
-import pfLogo from 'patternfly/dist/img/logo.svg';
-import pfBrand from 'patternfly/dist/img/brand.svg';
+import brand from './images/logo-brand.svg';
 
 import LoginCardWithValidation from './LoginCardWithValidation';
 
 const createProps = onSubmit => ({
     container: {
-        backgroundUrl: '',
+        backgroundUrl: 'invalid',
         className: '',
     },
     header: {
-        logoSrc: pfBrand,
-        logoTitle: pfLogo,
-        caption: '',
+        logoSrc: brand,
+        caption: `PR-CI Dashboard requires GitHub API token in order to fetch
+                  testing related data from GitHub. This token is stored in
+                  browser local storage and is used only by the browser to
+                  directly communicate with GitHub GraphQL API`,
     },
     card: {
         title: 'Log In to GitHub',
@@ -52,6 +53,30 @@ const createProps = onSubmit => ({
             onSubmit,
         },
     },
+    footerLinks: [
+        {
+            children: (
+                <span>
+                    <i className="fa fa-arrow-circle-o-right" aria-hidden="true" title="Go to token page" />
+                    GitHub tokens page
+                </span>
+            ),
+            href: 'https://github.com/settings/tokens',
+            target: '_blank',
+            onClick: () => false,
+        },
+        {
+            children: (
+                <span>
+                    <i className="fa fa-github" aria-hidden="true" title="Runner Log" />
+                    Contribute code
+                </span>
+            ),
+            href: 'https://github.com/pvoborni/pr-ci-dashboard',
+            target: '_blank',
+            onClick: () => false,
+        },
+    ],
 });
 
 

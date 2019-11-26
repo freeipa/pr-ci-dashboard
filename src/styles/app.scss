@@ -6,3 +6,19 @@
     width: 180px;
     z-index: 1050;
 }
+
+// Cover everything else by login page
+.login-pf {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1040;
+    background-color: #3D3D3D;
+}
+
+.login-pf-caption {
+    color: white;
+    margin-top: 10px;
+}
