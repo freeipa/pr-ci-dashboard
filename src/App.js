@@ -29,16 +29,18 @@ const Jobs = () => <Content><h2>Jobs</h2></Content>;
 class App extends Component {
     constructor() {
         super();
-        this.menu = [{
-            to: '/prs',
-            title: 'Pull Requests',
-            iconClass: 'fa fa-code-fork',
-        },
-        {
-            to: '/nightlies',
-            title: 'Nighly runs',
-            iconClass: 'fa fa-moon-o',
-        }];
+        this.menu = [
+            {
+                to: '/nightlies',
+                title: 'Nighly runs',
+                iconClass: 'fa fa-moon-o',
+            },
+            {
+                to: '/prs',
+                title: 'Pull Requests',
+                iconClass: 'fa fa-code-fork',
+            },
+        ];
     }
 
     render() {
@@ -70,7 +72,7 @@ class App extends Component {
                     <PrivateRoute path="/nightly/:nightlyTypeName" component={NightlyType} />
                     <Route path="/jobs" component={Jobs} />
                     <Route path="/login" component={LoginWithRedirect} />
-                    <Redirect exact from="/" to="/prs" />
+                    <Redirect exact from="/" to="/nightlies" />
                 </Switch>
                 <div className="openshift-logo">{OpenShiftLogo()}</div>
             </div>
