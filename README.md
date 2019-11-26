@@ -12,20 +12,19 @@ provides value.
 
 ## How to use
 
-As a prerequisite, install [Node.JS](https://nodejs.org) with
-[yarn](https://yarnpkg.com).
+As a prerequisite, install [Node.JS](https://nodejs.org).
 
 On Fedora:
 
 ```bash
-# dnf install nodejs-yarn
+# dnf install nodejs
 ```
 
-Yarn with React Scripts will do the rest.
+NPM with React Scripts will do the rest.
 
 ```bash
-$ yarnpkg install # installs dependencies
-$ yarnpkg dev # starts backend + server with react app
+$ npm install # installs dependencies
+$ npm run debug # starts backend + server with react app
 ```
 
 ## Authentication
@@ -54,7 +53,7 @@ $ cp src/test.config.js.in src/test.config.js
 Then
 
 ``` bash
-$ yarnpkg test
+$ npm run test
 ```
 
 ## Run in production
@@ -62,22 +61,18 @@ $ yarnpkg test
 Assuming desired port is 8888.
 
 ```bash
-$ yarnpkg build
+$ npm run build
 $ PORT=8888 node server/server.js
 ```
 
-Or in a container via Podman and then e.g. in Firefox
+Alternatively after build:
 ```bash
-$ podman run --name pcd -p 8888:8888 -d docker.io/pvoborni/pr-ci-dashboard:latest
-$ firefox localhost:8888
+$ npm run start
 ```
 
-## Demo
+## Deployed instance
 
-Limited version is deployed at: https://pvoborni.fedorapeople.org/pcd It is
-limited as it doesn´t have a backend to fetch Pagure tickets. Also Fedora people
-is not a proper server, so accessing anything than an index page doesn't work
-there.
+This project is deployed at https://ci.freeipa.org
 
 ## Philosophy behind the project
 
