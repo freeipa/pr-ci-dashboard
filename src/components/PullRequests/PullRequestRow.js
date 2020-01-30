@@ -35,7 +35,8 @@ class PullRequestRow extends React.Component {
 
     render() {
         const { pr, repository } = this.props;
-        const { contexts } = pr.commits.nodes[0].commit.status;
+        const { status } = pr.commits.nodes[0];
+        const contexts = status ? status.contexts : [];
         return (
             <React.Fragment>
                 <tr>
