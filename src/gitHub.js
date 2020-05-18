@@ -1,4 +1,4 @@
-export const DEFAULT_OWNER = 'freeipa';
+export const DEFAULT_OWNER = 'freeipa-pr-ci2';
 export const DEFAULT_REPO = 'freeipa';
 export const GITHUB_FETCH_LIMIT = 50;
 const TOKEN_KEY = 'github_token';
