@@ -1,5 +1,8 @@
 # A Dashboard for FreeIPA Pull Request CI
 
+**Note:** this project is no longer being developed and the production instance
+was decommissioned.
+
 A Dashboard for [FreeIPA PR-CI](https://github.com/freeipa/freeipa-pr-ci).
 
 A FreeIPA PR-CI is test executioner tool which can be configured to watch a
